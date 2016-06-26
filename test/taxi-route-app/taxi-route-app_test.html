@@ -1,0 +1,32 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>taxi-route-app test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/taxi-route-app/taxi-route-app.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <taxi-route-app></taxi-route-app>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('taxi-route-app', function() {
+
+        test('instantiating the element works', function() {
+          var element = fixture('basic');
+          assert.equal(element.is, 'taxi-route-app');
+        });
+
+      });
+    </script>
+  </body>
+</html>

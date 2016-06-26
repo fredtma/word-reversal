@@ -1,0 +1,132 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="my-view1">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                padding: 10px;
+            }
+
+            paper-card {
+                width: 100%;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                padding: 16px;
+                margin: 24px;
+                border-radius: 5px;
+                background-color: #fff;
+                color: #757575;
+            }
+
+            paper-button {
+                color: #fff;
+                background-color: #337ab7;
+                border-color: #2e6da4;
+                display: block;
+            }
+
+            .form-title {
+                margin-bottom: 20px;
+            }
+
+            .avatar {
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                overflow: hidden;
+                background: #23b7e5;
+                margin-right: 20px;
+                box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+                0 1px 8px 0 rgba(0, 0, 0, 0.12),
+                0 3px 3px -2px rgba(0, 0, 0, 0.4);
+            }
+
+            .company, h1 {
+                color: #3367d6;
+                font-size: 20px;
+                font-weight: 200;
+            }
+            paper-fab.blue {
+                --paper-fab-background: var(--paper-light-blue-500);
+                --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+            }
+        </style>
+
+        <paper-card elevation="3" heading="Word Reversal" image fade-image preload-image>
+            <form is="iron-form" id="form" name="form" content-type="application/json" action="/" method="post">
+                <div class="card-content">
+                    <div class="horizontal layout center form-title">
+                        <div class="avatar" item-icon></div>
+                        <div class="flex company">Calculation</div>
+                    </div>
+
+                    <iron-label> Type<br/>
+                            <paper-checkbox checked="{{model.reverse}}" name="type" value="reverse">Reverse Words</paper-checkbox>
+                            <paper-checkbox checked="{{model.space}}" name="type" value="space">Remove Space</paper-checkbox>
+                            <paper-checkbox checked="{{model.letter}}" name="type" value="letter">Letters Only</paper-checkbox>
+                    </iron-label>
+
+                    <paper-input label="Conversion Phrase" name="converted" value="{{model.converted}}" readonly></paper-input>
+
+                    <paper-textarea label="Converted Text" name="converted"
+                                    value="{{model.converter}}"></paper-textarea>
+                </div>
+                <div class="card-actions">
+                    <paper-fab icon="check" class="blue" title="Convert"></paper-fab>
+                </div>
+            </form>
+        </paper-card>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'my-view1',
+            properties:{
+                model:
+                {
+                    type: Object,
+                    value: function(){ return {};}
+                },
+            },
+            observers:[
+                    "conversionChanged(model.converter)"
+            ],
+            conversionChanged: function(sentence)
+            {
+                if(!sentence) return;
+                if(this.model.space) sentence = sentence.replace(/\t|\s/g, "");
+                if(this.model.letter) sentence = sentence.replace(/[^a-z]+/ig, "");
+                if(this.model.reverse)
+                {
+                    var stringArr   = sentence.split("");
+                    var reverse     = [];
+                    var length      = stringArr.length;
+                    for(; length !== 0; --length)
+                    {
+                        reverse.push(stringArr[length - 1]);
+                    };
+                    this.set('model.converted', reverse.join(""));
+                } else {
+                    this.set('model.converted', sentence);
+                }
+
+            }
+        });
+
+    </script>
+
+</dom-module>
